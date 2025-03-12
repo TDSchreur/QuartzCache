@@ -1,0 +1,25 @@
+﻿<Project>
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+
+    <!-- metadata -->
+    <Authors>CIP Team</Authors>
+    <Company>RDW</Company>
+    <Copyright>Copyright © RDW</Copyright>
+    <AssemblyName>Rdw.CIP.QuartzCache.$(MSBuildProjectName)</AssemblyName>
+    <RootNamespace>Rdw.CIP.QuartzCache.$(MSBuildProjectName)</RootNamespace>
+    
+
+    <!-- strict null policy: all nullability issues are treated as errors -->
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors>Nullable</WarningsAsErrors>
+    <ImplicitUsings>enable</ImplicitUsings>
+
+    <AnalysisLevel>latest</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+
+  </PropertyGroup>
+</Project>
+
