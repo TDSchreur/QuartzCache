@@ -16,7 +16,7 @@ public class Program
         try
         {
             Log.Information("Starting host");
-            
+
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddSerilog();
             builder.Services.AddMemoryCache();
@@ -29,7 +29,7 @@ public class Program
                     opts.DisallowConcurrentExecution(true);
                     opts.WithIdentity(jobKey);
                 });
-    
+
                 q.AddTrigger(opts => opts.ForJob(jobKey)
                                          .StartNow()
                                          .WithIdentity($"{nameof(StoreCertInCacheJob)}-trigger")
@@ -40,18 +40,18 @@ public class Program
                 options.WaitForJobsToComplete = true;
                 options.AwaitApplicationStarted = true;
             });
-            
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
-            
+
             }
 
-            app.MapGet("/getvalue", (HttpContext httpContext, IMemoryCache memoryCache) => memoryCache.TryGetValue(Constants.CacheKey, out int value) 
-                ? Results.Ok((object?)value) 
-                : Results.InternalServerError());
+            app.MapGet("/getvalue", (HttpContext httpContext, IMemoryCache memoryCache) => memoryCache.TryGetValue(Constants.CacheKey, out int value)
+                ? Results.Ok((object?)value)
+                : Results.Conflict());
 
             await app.RunAsync();
             return 0;

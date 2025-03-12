@@ -9,9 +9,9 @@ public class StoreCertInCacheJob(IMemoryCache memoryCache, ILogger<StoreCertInCa
     {
         int random = Random.Shared.Next();
         logger.LogInformation("The random value is {random}", random);
-        
+
         memoryCache.Set(Constants.CacheKey, random, DateTimeOffset.MaxValue);
-        
+
         return Task.CompletedTask;
     }
 }
