@@ -3,11 +3,10 @@
     <TargetFramework>net9.0</TargetFramework>
 
     <!-- metadata -->
-    <Authors>CIP Team</Authors>
-    <Company>RDW</Company>
-    <Copyright>Copyright © RDW</Copyright>
-    <AssemblyName>Rdw.CIP.QuartzCache.$(MSBuildProjectName)</AssemblyName>
-    <RootNamespace>Rdw.CIP.QuartzCache.$(MSBuildProjectName)</RootNamespace>
+    <Authors>T.D. Schreur</Authors>
+    <Copyright>Copyright © T.D. Schreur</Copyright>
+    <AssemblyName>TDS.QuartzCache.$(MSBuildProjectName)</AssemblyName>
+    <RootNamespace>TDS.QuartzCache.$(MSBuildProjectName)</RootNamespace>
     
 
     <!-- strict null policy: all nullability issues are treated as errors -->

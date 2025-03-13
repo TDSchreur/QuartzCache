@@ -1,6 +1,7 @@
-using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 
-namespace Rdw.CIP.QuartzCache.Api;
+namespace TDS.QuartzCache.CertificateCache;
 
 public class CertificateProvider : ICertificateProvider
 {

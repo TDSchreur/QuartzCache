@@ -1,4 +1,4 @@
-namespace Rdw.CIP.QuartzCache.Api;
+namespace TDS.QuartzCache.CertificateCache;
 
 public static class Constants
 {

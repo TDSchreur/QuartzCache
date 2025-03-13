@@ -1,0 +1,7 @@
+@Api_HostAddress = http://localhost:5122
+
+GET {{Api_HostAddress}}/getvalue HTTP/1.1
+
+###
+
+GET http://localhost:7152/api/HttpTrekker HTTP/1.1

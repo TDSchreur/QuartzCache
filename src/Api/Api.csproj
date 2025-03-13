@@ -2,15 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
-      <PackageReference Include="Quartz.Extensions.DependencyInjection" />
-      <PackageReference Include="Quartz.Extensions.Hosting" />
       <PackageReference Include="Serilog.Extensions.Hosting" />
       <PackageReference Include="Serilog.Sinks.Console" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CertificateCache\CertificateCache.csproj" />
   </ItemGroup>
 
 </Project>
