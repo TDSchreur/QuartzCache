@@ -1,0 +1,10 @@
+@Api_HostAddress = http://localhost:5122
+@Functions_HostAddress = http://localhost:7071
+
+###
+
+GET {{Api_HostAddress}}/getvalue HTTP/1.1
+
+###
+
+GET {{Functions_HostAddress}}/api/HttpTrekker HTTP/1.1

@@ -7,11 +7,10 @@
     <Copyright>Copyright © T.D. Schreur</Copyright>
     <AssemblyName>TDS.QuartzCache.$(MSBuildProjectName)</AssemblyName>
     <RootNamespace>TDS.QuartzCache.$(MSBuildProjectName)</RootNamespace>
-    
 
     <!-- strict null policy: all nullability issues are treated as errors -->
     <Nullable>enable</Nullable>
-    <WarningsAsErrors>Nullable</WarningsAsErrors>
+    <WarningsAsErrors>true</WarningsAsErrors>
     <ImplicitUsings>enable</ImplicitUsings>
 
     <AnalysisLevel>latest</AnalysisLevel>
@@ -20,5 +19,12 @@
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
 
   </PropertyGroup>
+
+  <ItemGroup>
+        <PackageReference Include="SonarAnalyzer.CSharp">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+  </ItemGroup>
 </Project>
 

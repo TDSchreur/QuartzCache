@@ -8,7 +8,6 @@ public class StoreCertInCacheJob(ICertificateProvider certificateProvider, ILogg
     public async Task Execute(IJobExecutionContext context)
     {
         logger.LogInformation("Refreshing the certificate");
-
-        await certificateProvider.UpdateCertificate();
+        await certificateProvider.UpdateCertificate(context.CancellationToken).ConfigureAwait(false);
     }
 }

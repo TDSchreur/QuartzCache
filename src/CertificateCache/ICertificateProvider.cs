@@ -1,7 +1,7 @@
-﻿namespace TDS.QuartzCache.CertificateCache;
+namespace TDS.QuartzCache.CertificateCache;
 
 public interface ICertificateProvider
 {
     string GetCertificate();
-    Task UpdateCertificate();
+    Task UpdateCertificate(CancellationToken cancellationToken = default);
 }

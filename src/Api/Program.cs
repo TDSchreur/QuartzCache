@@ -1,17 +1,22 @@
+using System.Globalization;
 using Serilog;
+using Serilog.Events;
+using Serilog.Sinks.SystemConsole.Themes;
 using TDS.QuartzCache.CertificateCache;
 
 namespace TDS.QuartzCache.Api;
 
-public class Program
+internal static class Program
 {
     public static async Task<int> Main(string[] args)
     {
         Log.Logger = new LoggerConfiguration()
                      .Enrich.FromLogContext()
-                     // .MinimumLevel.Warning()
-                     .MinimumLevel.Information()
-                     .WriteTo.Console()
+                     .WriteTo.Async(sink => sink.Console(
+                         LogEventLevel.Information,
+                         "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
+                         CultureInfo.InvariantCulture,
+                         theme: SystemConsoleTheme.Literate))
                      .CreateLogger();
 
         try
@@ -30,7 +35,7 @@ public class Program
                 return Results.Ok(cert);
             });
 
-            await app.RunAsync();
+            await app.RunAsync().ConfigureAwait(false);
             return 0;
         }
         catch (Exception ex)
@@ -40,7 +45,7 @@ public class Program
         }
         finally
         {
-            await Log.CloseAndFlushAsync();
+            await Log.CloseAndFlushAsync().ConfigureAwait(false);
         }
     }
 }
