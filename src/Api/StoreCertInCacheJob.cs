@@ -1,17 +1,13 @@
-using Microsoft.Extensions.Caching.Memory;
 using Quartz;
 
 namespace Rdw.CIP.QuartzCache.Api;
 
-public class StoreCertInCacheJob(IMemoryCache memoryCache, ILogger<StoreCertInCacheJob> logger) : IJob
+public class StoreCertInCacheJob(ICertificateProvider certificateProvider, ILogger<StoreCertInCacheJob> logger) : IJob
 {
-    public Task Execute(IJobExecutionContext context)
+    public async Task Execute(IJobExecutionContext context)
     {
-        int random = Random.Shared.Next();
-        logger.LogInformation("The random value is {random}", random);
+        logger.LogInformation("Refreshing the certificate");
 
-        memoryCache.Set(Constants.CacheKey, random, DateTimeOffset.MaxValue);
-
-        return Task.CompletedTask;
+        await certificateProvider.UpdateCertificate();
     }
 }

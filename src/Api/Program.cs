@@ -10,6 +10,7 @@ public class Program
     {
         Log.Logger = new LoggerConfiguration()
                      .Enrich.FromLogContext()
+                     .MinimumLevel.Warning()
                      .WriteTo.Console()
                      .CreateLogger();
 
@@ -20,6 +21,7 @@ public class Program
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddSerilog();
             builder.Services.AddMemoryCache();
+            builder.Services.AddSingleton<ICertificateProvider, CertificateProvider>();
             builder.Services.AddQuartz(q =>
             {
                 // Just use the name of your job that you created in the Jobs folder.
@@ -43,15 +45,11 @@ public class Program
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
+            app.MapGet("/getvalue", (HttpContext httpContext, ICertificateProvider certificateProvider) =>
             {
-
-            }
-
-            app.MapGet("/getvalue", (HttpContext httpContext, IMemoryCache memoryCache) => memoryCache.TryGetValue(Constants.CacheKey, out int value)
-                ? Results.Ok((object?)value)
-                : Results.Conflict());
+                var cert = certificateProvider.GetCertificate();
+                return Results.Ok(cert);
+            });
 
             await app.RunAsync();
             return 0;
