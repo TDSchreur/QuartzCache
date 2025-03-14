@@ -8,3 +8,6 @@ GET {{Api_HostAddress}}/getvalue HTTP/1.1
 ###
 
 GET {{Functions_HostAddress}}/api/HttpTrekker HTTP/1.1
+
+
+### docker run --rm -v /etc/hosts:/etc/hosts skandyla/wrk -t5 -c10 -d30  http://localhost:5122/getvalue

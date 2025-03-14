@@ -1,7 +1,7 @@
 using System.Globalization;
 using Serilog;
 using Serilog.Events;
-using Serilog.Sinks.SystemConsole.Themes;
+using SerilogTracing;
 using TDS.QuartzCache.CertificateCache;
 
 namespace TDS.QuartzCache.Api;
@@ -12,20 +12,27 @@ internal static class Program
     {
         Log.Logger = new LoggerConfiguration()
                      .Enrich.FromLogContext()
-                     .WriteTo.Async(sink => sink.Console(
-                         LogEventLevel.Information,
-                         "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
-                         CultureInfo.InvariantCulture,
-                         theme: SystemConsoleTheme.Literate))
+                     .Enrich.WithProperty("Application", typeof(Program).Assembly.GetName().Name)
+                     .WriteTo.Seq("http://192.168.178.17:5341", LogEventLevel.Verbose)
+                     // .WriteTo.Async(sink => sink.Console(
+                     //     LogEventLevel.Information,
+                     //     "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
+                     //     CultureInfo.InvariantCulture,
+                     //     theme: SystemConsoleTheme.Literate))
                      .CreateLogger();
+
+        using var _ = new ActivityListenerConfiguration()
+                      .Instrument.AspNetCoreRequests()
+                      .TraceToSharedLogger();
 
         try
         {
             Log.Information("Starting host");
 
-            var builder = WebApplication.CreateBuilder(args);
+            WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
             builder.Services.AddSerilog();
-            builder.Services.AddCertificateCache();
+            builder.Services.AddCertificateCache(builder.Configuration);
 
             var app = builder.Build();
 

@@ -8,9 +8,9 @@ internal static class Program
     private static void Main()
     {
         var host = new HostBuilder().ConfigureFunctionsWebApplication()
-                                    .ConfigureServices(services =>
+                                    .ConfigureServices((host, services) =>
                                     {
-                                        services.AddCertificateCache();
+                                        services.AddCertificateCache(host.Configuration);
                                     })
                                     .Build();
 

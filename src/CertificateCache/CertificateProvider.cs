@@ -1,64 +1,46 @@
-using Azure;
 using Azure.Security.KeyVault.Certificates;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace TDS.QuartzCache.CertificateCache;
 
-public class CertificateProvider : ICertificateProvider
+public class CertificateProvider(IMemoryCache memoryCache,
+                                 IOptions<CertificateCacheConfiguration> options,
+                                 CertificateClient certificateClient,
+                                 ILogger<CertificateProvider> logger)
+    : ICertificateProvider
 {
-    private readonly SemaphoreSlim _lock = new(1, 1);
-    private readonly IMemoryCache _memoryCache;
-    private readonly CertificateClient _certificateClient;
-    private readonly ILogger<CertificateProvider> _logger;
+    private readonly CertificateCacheConfiguration _config = options.Value;
 
-    private const string CertificateName = "integratieplatform";
-
-    public CertificateProvider(IMemoryCache memoryCache,
-                               CertificateClient certificateClient,
-                               ILogger<CertificateProvider> logger)
-    {
-        this._memoryCache = memoryCache;
-        _certificateClient = certificateClient;
-        this._logger = logger;
-    }
+    private const string CertificateCacheKey = nameof(CertificateCacheKey);
 
     public string GetCertificate()
     {
-        var cert = _memoryCache.Get<string>(Constants.CacheKey);
-        if (!string.IsNullOrWhiteSpace(cert))
+        var cert = memoryCache.Get<string>(CertificateCacheKey);
+
+        if (string.IsNullOrWhiteSpace(cert))
         {
-            _logger.LogInformation("Certificate found in cache");
-            return cert;
+            logger.LogError("Certificate not found in cache");
+            throw new CertificateNotFoundException();
         }
 
-        _logger.LogError("Certificate not found in cache");
-        throw new CertificateNotFoundException();
+        logger.LogInformation("Certificate found in cache");
+        return cert;
     }
 
     public async Task UpdateCertificate(CancellationToken cancellationToken = default)
     {
-        _logger.LogInformation("Updating certificate");
-        try
+        logger.LogInformation("Updating certificate");
+
+        var cert = await certificateClient.GetCertificateAsync(_config.CertificateName, cancellationToken)
+                                          .ConfigureAwait(false);
+
+        if (cert?.Value == null)
         {
-            await _lock.WaitAsync(cancellationToken).ConfigureAwait(false);
-
-            var cert = await _certificateClient.GetCertificateAsync(CertificateName, cancellationToken)
-                                               .ConfigureAwait(false);
-
-            if (cert?.Value == null)
-            {
-                throw new CertificateNotFoundException();
-            }
-
-            _memoryCache.Set(
-                Constants.CacheKey,
-                $"Certificate-{cert.Value.Name}-{Random.Shared.Next(100, 999)}",
-                absoluteExpiration: DateTimeOffset.UtcNow.AddSeconds(10));
+            throw new CertificateNotFoundException();
         }
-        finally
-        {
-            _lock.Release();
-        }
+
+        memoryCache.Set(CertificateCacheKey, $"Certificate-{cert.Value.Name}-{Random.Shared.Next(100, 999)}", DateTimeOffset.Now.AddMinutes(10));
     }
 }
