@@ -22,6 +22,7 @@ spelling_exclusion_path = spelling.dic
 
 [*.cs]
 indent_size = 4
+max_line_length = 240
 dotnet_sort_system_directives_first = true
 
 # Don't use this. qualifier

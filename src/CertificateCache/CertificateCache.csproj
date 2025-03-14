@@ -5,6 +5,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Azure.Security.KeyVault.Certificates" />
+        <PackageReference Include="Microsoft.Extensions.Azure" />
         <PackageReference Include="Microsoft.Extensions.Caching.Memory" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />

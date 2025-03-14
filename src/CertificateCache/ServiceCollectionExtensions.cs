@@ -1,3 +1,6 @@
+using Azure.Core;
+using Azure.Identity;
+using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.DependencyInjection;
 using Quartz;
 
@@ -7,6 +10,13 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddCertificateCache(this IServiceCollection services)
     {
+        services.AddAzureClients(builder =>
+        {
+            builder.UseCredential(CreateCredentials());
+
+            const string keyvaultName = "stcip-o-we-kv";
+            builder.AddCertificateClient(new Uri($"https://{keyvaultName}.vault.azure.net/"));
+        });
         services.AddMemoryCache();
         services.AddSingleton<ICertificateProvider, CertificateProvider>();
         services.AddQuartz(q =>
@@ -31,5 +41,15 @@ public static class ServiceCollectionExtensions
         });
 
         return services;
+    }
+
+    private static TokenCredential CreateCredentials()
+    {
+        var options = new DefaultAzureCredentialOptions
+        {
+            ExcludeManagedIdentityCredential = string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("WEBSITE_SITE_NAME"))
+        };
+
+        return new DefaultAzureCredential(options);
     }
 }

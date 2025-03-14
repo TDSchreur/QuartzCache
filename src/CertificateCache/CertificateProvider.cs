@@ -1,3 +1,5 @@
+using Azure;
+using Azure.Security.KeyVault.Certificates;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 
@@ -7,11 +9,17 @@ public class CertificateProvider : ICertificateProvider
 {
     private readonly SemaphoreSlim _lock = new(1, 1);
     private readonly IMemoryCache _memoryCache;
+    private readonly CertificateClient _certificateClient;
     private readonly ILogger<CertificateProvider> _logger;
 
-    public CertificateProvider(IMemoryCache memoryCache, ILogger<CertificateProvider> logger)
+    private const string CertificateName = "integratieplatform";
+
+    public CertificateProvider(IMemoryCache memoryCache,
+                               CertificateClient certificateClient,
+                               ILogger<CertificateProvider> logger)
     {
         this._memoryCache = memoryCache;
+        _certificateClient = certificateClient;
         this._logger = logger;
     }
 
@@ -34,9 +42,18 @@ public class CertificateProvider : ICertificateProvider
         try
         {
             await _lock.WaitAsync(cancellationToken).ConfigureAwait(false);
+
+            var cert = await _certificateClient.GetCertificateAsync(CertificateName, cancellationToken)
+                                               .ConfigureAwait(false);
+
+            if (cert?.Value == null)
+            {
+                throw new CertificateNotFoundException();
+            }
+
             _memoryCache.Set(
                 Constants.CacheKey,
-                $"Certificate-{Random.Shared.Next(100, 999)}",
+                $"Certificate-{cert.Value.Name}-{Random.Shared.Next(100, 999)}",
                 absoluteExpiration: DateTimeOffset.UtcNow.AddSeconds(10));
         }
         finally
