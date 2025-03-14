@@ -2,7 +2,7 @@ using NBomber.CSharp;
 using NBomber.Sinks.Timescale;
 using ZSpitz.Util;
 
-namespace Demo.NBomber_Studio;
+namespace TDS.QuartzCache.LoadTest;
 
 public static class Program
 {
