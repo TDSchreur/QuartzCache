@@ -1,7 +1,7 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using TDS.QuartzCache.CertificateCache;
+// using TDS.QuartzCache.CertificateCache;
 
 namespace TDS.QuartzCache.Function;
 
@@ -14,7 +14,7 @@ internal static class Program
                                     {
                                         services.AddApplicationInsightsTelemetryWorkerService();
                                         services.ConfigureFunctionsApplicationInsights();
-                                        services.AddCertificateCache(host.Configuration);
+                                        // services.AddCertificateCache(host.Configuration);
                                         services.AddHealthChecks();
                                     })
                                     .Build();

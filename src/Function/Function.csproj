@@ -9,8 +9,9 @@
     <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.ApplicationInsights" />
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http.AspNetCore"/>
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk"  />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.EventHubs" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http.AspNetCore" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">
@@ -22,9 +23,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Using Include="System.Threading.ExecutionContext" Alias="ExecutionContext"/>
+    <Using Include="System.Threading.ExecutionContext" Alias="ExecutionContext" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CertificateCache\CertificateCache.csproj" />
+<!--    <ProjectReference Include="..\CertificateCache\CertificateCache.csproj" />-->
   </ItemGroup>
 </Project>
