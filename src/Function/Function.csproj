@@ -26,6 +26,6 @@
     <Using Include="System.Threading.ExecutionContext" Alias="ExecutionContext" />
   </ItemGroup>
   <ItemGroup>
-<!--    <ProjectReference Include="..\CertificateCache\CertificateCache.csproj" />-->
+    <ProjectReference Include="..\CertificateCache\CertificateCache.csproj" />
   </ItemGroup>
 </Project>
