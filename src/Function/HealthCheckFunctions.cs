@@ -8,7 +8,7 @@ namespace TDS.QuartzCache.Function;
 public class HealthCheckFunctions(HealthCheckService healthCheck)
 {
     [Function("Health")]
-    public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequest req)
+    public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequest req)
     {
         var report = await healthCheck.CheckHealthAsync().ConfigureAwait(false);
 

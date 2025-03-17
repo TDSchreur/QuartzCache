@@ -9,7 +9,7 @@ namespace TDS.QuartzCache.Function;
 public class HttpTrekker(ICertificateProvider certificateProvider, ILogger<HttpTrekker> logger)
 {
     [Function("HttpTrekker")]
-    public IActionResult Run([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequest req)
+    public IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequest req)
     {
         logger.LogInformation("C# HTTP trigger function processed a request.");
 
