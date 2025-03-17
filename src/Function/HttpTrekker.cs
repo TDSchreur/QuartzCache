@@ -6,23 +6,14 @@ using TDS.QuartzCache.CertificateCache;
 
 namespace TDS.QuartzCache.Function;
 
-public class HttpTrekker
+public class HttpTrekker(ICertificateProvider certificateProvider, ILogger<HttpTrekker> logger)
 {
-    private readonly ICertificateProvider _certificateProvider;
-    private readonly ILogger<HttpTrekker> _logger;
-
-    public HttpTrekker(ICertificateProvider certificateProvider, ILogger<HttpTrekker> logger)
-    {
-        _certificateProvider = certificateProvider;
-        _logger = logger;
-    }
-
     [Function("HttpTrekker")]
     public IActionResult Run([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequest req)
     {
-        _logger.LogInformation("C# HTTP trigger function processed a request.");
+        logger.LogInformation("C# HTTP trigger function processed a request.");
 
-        var cert = _certificateProvider.GetCertificate();
+        var cert = certificateProvider.GetCertificate();
         return new OkObjectResult(cert);
     }
 }

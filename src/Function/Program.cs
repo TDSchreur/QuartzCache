@@ -15,6 +15,7 @@ internal static class Program
                                         services.AddApplicationInsightsTelemetryWorkerService();
                                         services.ConfigureFunctionsApplicationInsights();
                                         services.AddCertificateCache(host.Configuration);
+                                        services.AddHealthChecks();
                                     })
                                     .Build();
 
