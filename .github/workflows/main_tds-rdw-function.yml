@@ -37,11 +37,14 @@ jobs:
           popd
 
       - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_7FB68287B44545D2A22B88D7636D7F27 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_DF1D42410B784511B5FB66C4894A8558 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_47FE400094FF4552A1707F58EF9A25D4 }}
+        - uses: azure/login@v2
+          with:
+            creds: ${{ secrets.AZURE_CREDENTIALS }}
+        # uses: azure/login@v2
+        # with:
+        #   client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_7FB68287B44545D2A22B88D7636D7F27 }}
+        #   tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_DF1D42410B784511B5FB66C4894A8558 }}
+        #   subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_47FE400094FF4552A1707F58EF9A25D4 }}
 
       - name: "Run Azure Functions Action"
         uses: Azure/functions-action@v1
