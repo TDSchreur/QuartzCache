@@ -1,3 +1,5 @@
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TDS.QuartzCache.CertificateCache;
 
@@ -10,6 +12,8 @@ internal static class Program
         var host = new HostBuilder().ConfigureFunctionsWebApplication()
                                     .ConfigureServices((host, services) =>
                                     {
+                                        services.AddApplicationInsightsTelemetryWorkerService();
+                                        services.ConfigureFunctionsApplicationInsights();
                                         services.AddCertificateCache(host.Configuration);
                                     })
                                     .Build();
