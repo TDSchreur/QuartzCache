@@ -1,7 +1,6 @@
-// Default URL for triggering event grid function in the local environment.
-// http://localhost:7071/runtime/webhooks/EventGrid?functionName={functionname}
-
 using Azure.Messaging;
+using Azure.Messaging.EventGrid;
+using Azure.Messaging.EventGrid.SystemEvents;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 
@@ -13,6 +12,14 @@ public class KeyVaultEvents(ILogger<KeyVaultEvents> logger)
     public void Run([EventGridTrigger] CloudEvent cloudEvent)
     {
         logger.LogInformation("Event type: {Type}, Event subject: {Subject}", cloudEvent.Type, cloudEvent.Subject);
+
+        switch (cloudEvent.Type)
+        {
+            case SystemEventNames.KeyVaultSecretNewVersionCreated:
+                var eventData = cloudEvent.Data.ToObjectFromJson<KeyVaultSecretNewVersionCreatedEventData>();
+                logger.LogInformation("Key vault secret new version created: {VaultName}, {SecretName}, {Version}", eventData.VaultName, eventData.ObjectName, eventData.Version);
+                break;
+        }
 
         try
         {
