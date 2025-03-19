@@ -14,7 +14,24 @@ public class KeyVaultEvents(ILogger<KeyVaultEvents> logger)
     {
         logger.LogInformation("Event type: {Type}, Event subject: {Subject}", cloudEvent.Type, cloudEvent.Subject);
 
-        var cloudEventAsJson = System.Text.Json.JsonSerializer.Serialize(cloudEvent);
-        logger.LogInformation("Cloud event as json: {CloudEvent}", cloudEventAsJson);
+        try
+        {
+            var cloudEventAsJson = System.Text.Json.JsonSerializer.Serialize(cloudEvent);
+            logger.LogInformation("Cloud event as json: {CloudEvent}", cloudEventAsJson);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "An exception occurred while processing cloud event");
+        }
+
+        try
+        {
+            var cloudEventData = System.Text.Json.JsonSerializer.Serialize(cloudEvent.Data);
+            logger.LogInformation("Cloud event data: {CloudEventData}", cloudEventData);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "An exception occurred while processing cloud event date");
+        }
     }
 }
