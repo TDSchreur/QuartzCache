@@ -9,7 +9,7 @@ namespace TDS.QuartzCache.Function;
 
 public class KeyVaultEvents(ILogger<KeyVaultEvents> logger)
 {
-    [Function("event")]
+    [Function(nameof(KeyVaultEvents))]
     public void Run([EventGridTrigger] CloudEvent cloudEvent)
     {
         logger.LogInformation("Event type: {Type}, Event subject: {Subject}", cloudEvent.Type, cloudEvent.Subject);
