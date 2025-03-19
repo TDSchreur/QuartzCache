@@ -24,6 +24,6 @@ public class HttpTrekker(ICertificateProvider certificateProvider, ILogger<HttpT
 
     public class CertResponse
     {
-        public string Cert { get; init; }
+        public required string Cert { get; init; }
     }
 }

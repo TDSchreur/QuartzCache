@@ -3,6 +3,7 @@
     <PackageVersion Include="Azure.Security.KeyVault.Certificates" Version="4.7.0" />
     <PackageVersion Include="Microsoft.ApplicationInsights.WorkerService" Version="2.23.0" />
     <PackageVersion Include="Microsoft.Azure.Functions.Worker.ApplicationInsights" Version="2.0.0" />
+    <PackageVersion Include="Microsoft.Azure.Functions.Worker.Extensions.EventGrid" Version="3.4.2" />
     <PackageVersion Include="Microsoft.Azure.Functions.Worker.Extensions.EventHubs" Version="6.3.6" />
     <PackageVersion Include="Microsoft.Azure.Functions.Worker.Extensions.OpenApi" Version="1.5.1" />
     <PackageVersion Include="Microsoft.Extensions.Azure" Version="1.11.0" />

@@ -3,8 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TDS.QuartzCache.CertificateCache;
 
-// using TDS.QuartzCache.CertificateCache;
-
 namespace TDS.QuartzCache.Function;
 
 internal static class Program

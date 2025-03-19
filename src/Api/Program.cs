@@ -13,7 +13,9 @@ internal static class Program
         Log.Logger = new LoggerConfiguration()
                      .Enrich.FromLogContext()
                      .Enrich.WithProperty("Application", typeof(Program).Assembly.GetName().Name)
+#pragma warning disable S1075
                      .WriteTo.Seq("http://192.168.178.17:5341", LogEventLevel.Verbose)
+#pragma warning restore S1075
                      // .WriteTo.Async(sink => sink.Console(
                      //     LogEventLevel.Information,
                      //     "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
