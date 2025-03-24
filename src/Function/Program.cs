@@ -18,7 +18,7 @@ internal static class Program
                                         services.AddCertificateCache(host.Configuration);
                                         services.AddHealthChecks();
                                     })
-                                    // Deze moet als laatste
+                                    // Deze moet na ConfigureServices
                                     .ConfigureLogging(logging =>
                                     {
                                         // https://learn.microsoft.com/en-us/azure/azure-functions/dotnet-isolated-process-guide?tabs=hostbuilder%2Cwindows#managing-log-levels
