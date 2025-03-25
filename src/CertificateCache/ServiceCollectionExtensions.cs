@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using Azure.Core;
 using Azure.Identity;
 using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
@@ -32,7 +31,6 @@ public static class ServiceCollectionExtensions
             var jobKey = new JobKey(nameof(StoreCertInCacheJob));
             q.AddJob<StoreCertInCacheJob>(opts =>
             {
-                opts.DisallowConcurrentExecution(true);
                 opts.WithIdentity(jobKey);
             });
 
@@ -50,7 +48,7 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    private static TokenCredential CreateCredentials()
+    private static DefaultAzureCredential CreateCredentials()
     {
         var options = new DefaultAzureCredentialOptions { ExcludeManagedIdentityCredential = string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("WEBSITE_SITE_NAME")) };
 
@@ -63,5 +61,5 @@ public class CertificateCacheConfiguration
     [Required] public required string CertificateName { get; init; }
 
     [Required] public required string KeyVaultName { get; init; }
-    public Uri KeyVaultUri => new Uri($"https://{KeyVaultName}.vault.azure.net/");
+    public Uri KeyVaultUri => new($"https://{KeyVaultName}.vault.azure.net/");
 }

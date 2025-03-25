@@ -1,6 +1,4 @@
-using System.Globalization;
 using Serilog;
-using Serilog.Events;
 using SerilogTracing;
 using TDS.QuartzCache.CertificateCache;
 
@@ -14,7 +12,7 @@ internal static class Program
                      .Enrich.FromLogContext()
                      .Enrich.WithProperty("Application", typeof(Program).Assembly.GetName().Name)
 #pragma warning disable S1075
-                     .WriteTo.Seq("http://192.168.178.17:5341", LogEventLevel.Verbose)
+                     .WriteTo.Seq("http://192.168.178.17:5341")
 #pragma warning restore S1075
                      // .WriteTo.Async(sink => sink.Console(
                      //     LogEventLevel.Information,
@@ -31,7 +29,7 @@ internal static class Program
         {
             Log.Information("Starting host");
 
-            WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+            var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddSerilog();
             builder.Services.AddCertificateCache(builder.Configuration);
