@@ -1,3 +1,3 @@
 namespace TDS.QuartzCache.CertificateCache;
 
-public class CertificateNotFoundException() : Exception("Can't update the certificate");
+public class CertificateNotFoundException() : Exception("Certificate not found in cache");

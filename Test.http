@@ -7,54 +7,15 @@ GET {{Api_HostAddress}}/getvalue HTTP/1.1
 
 ###
 
-GET {{Functions_HostAddress}}/api/HttpTrekker HTTP/1.1
+GET {{Api_HostAddress}}/delay/50000000 HTTP/1.1
 
 ###
 
-POST {{Functions_HostAddress}}/runtime/webhooks/EventGrid?functionName=KeyVaultEvents
-aeg-event-type: Notification
-Content-Type: application/json
-
-{
-  "id": "671867ee-ec69-4dce-b148-4c17c662d79c",
-  "source": "/subscriptions/1a73db44-1b38-4d59-be38-29587ad5b8a9/resourceGroups/tds-rdw-tests/providers/Microsoft.KeyVault/vaults/tds-rdw-kv",
-  "type": "Microsoft.KeyVault.SecretNewVersionCreated",
-  "data": {
-    "Id": "https://tds-rdw-kv.vault.azure.net/secrets/kjhkjh/b615c31d9209497d9762eb8e8ecbcb64",
-    "VaultName": "tds-rdw-kv",
-    "ObjectType": "Secret",
-    "ObjectName": "kjhkjh",
-    "Version": "b615c31d9209497d9762eb8e8ecbcb64",
-    "NBF": null,
-    "EXP": null
-  },
-  "time": "2025-03-19T14:29:48.188824+00:00",
-  "specversion": "1.0",
-  "subject": "kjhkjh"
-}
+GET {{Functions_HostAddress}}/api/httptrekker HTTP/1.1
 
 ###
 
-POST http://localhost:7071/admin/functions/KeyVaultEvents
-Content-Type: application/json
-
-{
-  "id": "671867ee-ec69-4dce-b148-4c17c662d79c",
-  "source": "/subscriptions/1a73db44-1b38-4d59-be38-29587ad5b8a9/resourceGroups/tds-rdw-tests/providers/Microsoft.KeyVault/vaults/tds-rdw-kv",
-  "type": "Microsoft.KeyVault.SecretNewVersionCreated",
-  "data": {
-    "Id": "https://tds-rdw-kv.vault.azure.net/secrets/kjhkjh/b615c31d9209497d9762eb8e8ecbcb64",
-    "VaultName": "tds-rdw-kv",
-    "ObjectType": "Secret",
-    "ObjectName": "kjhkjh",
-    "Version": "b615c31d9209497d9762eb8e8ecbcb64",
-    "NBF": null,
-    "EXP": null
-  },
-  "time": "2025-03-19T14:29:48.188824+00:00",
-  "specversion": "1.0",
-  "subject": "kjhkjh"
-}
+GET {{Functions_HostAddress}}/api/Health HTTP/1.1
 
 ###
 
