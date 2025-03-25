@@ -11,7 +11,7 @@ variables:
   azureSubscription: "azure-dw"
 
 stages:
-  - stage: Buildabout:blank#blocked
+  - stage: Build
     jobs:
       - job: Build
         steps:
