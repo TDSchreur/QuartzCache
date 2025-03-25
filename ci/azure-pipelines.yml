@@ -1,0 +1,71 @@
+trigger:
+  - master
+
+pool:
+  vmImage: "ubuntu-latest"
+
+variables:
+  project: "src/Function/Function.csproj"
+  configuration: "Release"
+  artifactName: "function"
+
+stages:
+  - stage: Build
+    jobs:
+      - job: Build
+        steps:
+          - checkout: self
+
+          - task: UseDotNet@2
+            inputs:
+              packageType: "sdk"
+              version: "8.0.x"
+              installationPath: $(Agent.ToolsDirectory)/dotnet
+
+          - task: DotNetCoreCLI@2
+            displayName: restore
+            inputs:
+              command: "restore"
+              projects: "$(project)"
+              feedsToUse: config
+              nugetConfigPath: nuget.config
+
+          - task: DotNetCoreCLI@2
+            displayName: build
+            inputs:
+              command: "build"
+              projects: "$(project)"
+              arguments: "--no-restore -c $(configuration)"
+
+          - task: DotNetCoreCLI@2
+            displayName: publish
+            inputs:
+              command: "publish"
+              projects: $(project)
+              zipAfterPublish: true
+              publishWebProjects: false
+              arguments: "-c $(configuration) -o $(Build.ArtifactStagingDirectory)"
+
+          - task: PublishBuildArtifacts@1
+            displayName: "publish artifact function"
+            inputs:
+              PathtoPublish: "$(Build.ArtifactStagingDirectory)"
+              ArtifactName: "$(artifactName)"
+              publishLocation: "Container"
+
+      # - job: Deploy
+      #   steps:
+      #     - checkout: self
+      #     - task: UseDotNet@2
+      #       inputs:
+      #         packageType: 'sdk'
+      #         version: '8.0.x'
+      #         installationPath: $(Agent.ToolsDirectory)/dotnet
+      #     - task: AzureFunctionApp@1
+      #       inputs:
+      #         azureSubscription: 'AzureForGitHubActions'
+      #         appType: 'functionApp'
+      #         appName: 'tds-rdw-function'
+      #         package: '$(System.DefaultWorkingDirectory)/src/Function/output'
+      #         deploymentMethod: 'auto'
+      #         runtimeStack: 'DOTNET|8.0'
