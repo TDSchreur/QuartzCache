@@ -7,7 +7,8 @@ pool:
 variables:
   project: "src/Function/Function.csproj"
   configuration: "Release"
-  artifactName: "function"
+  artifactName: "Function"
+  azureSubscription: "azure-sc"
 
 stages:
   - stage: Build
@@ -53,19 +54,22 @@ stages:
               ArtifactName: "$(artifactName)"
               publishLocation: "Container"
 
-      # - job: Deploy
-      #   steps:
-      #     - checkout: self
-      #     - task: UseDotNet@2
-      #       inputs:
-      #         packageType: 'sdk'
-      #         version: '8.0.x'
-      #         installationPath: $(Agent.ToolsDirectory)/dotnet
-      #     - task: AzureFunctionApp@1
-      #       inputs:
-      #         azureSubscription: 'AzureForGitHubActions'
-      #         appType: 'functionApp'
-      #         appName: 'tds-rdw-function'
-      #         package: '$(System.DefaultWorkingDirectory)/src/Function/output'
-      #         deploymentMethod: 'auto'
-      #         runtimeStack: 'DOTNET|8.0'
+  - stage: Deploy
+    dependsOn: Build
+    jobs:
+      - deployment: Deploy
+        environment: "tds-rdw-function"
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+
+                - task: AzureFunctionApp@1
+                  inputs:
+                    azureSubscription: $(azureSubscription)
+                    appType: "functionApp"
+                    appName: "tds-rdw-function"
+                    package: $(Pipeline.Workspace)/Function/Function.zip
+                    deploymentMethod: "auto"
+                    runtimeStack: "DOTNET-ISOLATED|8.0"
