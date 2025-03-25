@@ -65,10 +65,10 @@ stages:
               steps:
                 - checkout: self
 
-                - task: AzureFunctionApp@1
+                - task: AzureFunctionApp@2
                   inputs:
                     azureSubscription: $(azureSubscription)
-                    appType: "functionApp"
+                    appType: "functionAppLinux"
                     appName: "tds-rdw-function"
                     package: $(Pipeline.Workspace)/Function/Function.zip
                     deploymentMethod: "auto"
