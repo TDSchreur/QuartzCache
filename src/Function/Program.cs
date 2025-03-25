@@ -10,6 +10,8 @@ internal static class Program
 {
     private static void Main()
     {
+        _ = typeof(BinaryData); // Forces loading the System.Memory.Data reference
+
         var host = new HostBuilder().ConfigureFunctionsWebApplication()
                                     .ConfigureServices((host, services) =>
                                     {
