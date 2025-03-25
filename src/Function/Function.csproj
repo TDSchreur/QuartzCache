@@ -31,4 +31,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CertificateCache\CertificateCache.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <FunctionsPreservedDependencies Include="System.Memory.Data.dll" />
+  </ItemGroup>
 </Project>
