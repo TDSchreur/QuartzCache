@@ -8,10 +8,10 @@ variables:
   project: "src/Function/Function.csproj"
   configuration: "Release"
   artifactName: "Function"
-  azureSubscription: "azure-sc"
+  azureSubscription: "azure-dw"
 
 stages:
-  - stage: Build
+  - stage: Buildabout:blank#blocked
     jobs:
       - job: Build
         steps:
@@ -39,7 +39,7 @@ stages:
               arguments: "--no-restore -c $(configuration)"
 
           - task: DotNetCoreCLI@2
-            displayName: publish
+            displayName: publish project
             inputs:
               command: "publish"
               projects: $(project)
@@ -48,7 +48,7 @@ stages:
               arguments: "-c $(configuration) -o $(Build.ArtifactStagingDirectory)"
 
           - task: PublishBuildArtifacts@1
-            displayName: "publish artifact function"
+            displayName: publish artifact
             inputs:
               PathtoPublish: "$(Build.ArtifactStagingDirectory)"
               ArtifactName: "$(artifactName)"
