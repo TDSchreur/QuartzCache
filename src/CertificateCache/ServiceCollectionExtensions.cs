@@ -37,7 +37,7 @@ public static class ServiceCollectionExtensions
             q.AddTrigger(opts => opts.ForJob(jobKey)
                                      .StartNow()
                                      .WithIdentity($"{nameof(StoreCertInCacheJob)}-trigger")
-                                     .WithSimpleSchedule(SimpleScheduleBuilder.RepeatSecondlyForever(10)));
+                                     .WithSimpleSchedule(SimpleScheduleBuilder.RepeatMinutelyForever(5)));
         });
         services.AddQuartzHostedService(options =>
         {
