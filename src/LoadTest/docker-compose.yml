@@ -1,6 +1,7 @@
 services:
+
   timescaledb:
-    image: timescale/timescaledb:2.14.2-pg16
+    image: timescale/timescaledb:2.14.2-pg16 #timescale/timescaledb:2.25.0-pg18-oss
     command: postgres -c 'max_connections=500'
     restart: always
     ports:
@@ -13,7 +14,7 @@ services:
       POSTGRES_PASSWORD: timescaledb
     healthcheck:
       test:
-        ["CMD-SHELL", "pg_isready -d 'user=timescaledb dbname=nb_studio_db'"]
+        [ "CMD-SHELL", "pg_isready -d 'user=timescaledb dbname=nb_studio_db'" ]
       interval: 5s
       timeout: 10s
       retries: 5
@@ -27,7 +28,7 @@ services:
       timescaledb:
         condition: service_healthy
     environment:
-      DBSETTINGS:CONNECTIONSTRING: "Host=timescaledb;Port=5432;Username=timescaledb;Password=timescaledb;Database=nb_studio_db;Pooling=true;"
+      POSTGRESQL__CONNECTIONSTRING: "Host=timescaledb;Port=5432;Username=timescaledb;Password=timescaledb;Database=nb_studio_db;Pooling=true;"
 
 volumes:
   nb_studio_data:
